@@ -1,5 +1,5 @@
 ---
 applications:
  - name: ChannelsNode
-   random-route: true
+   host: channelsnode
    memory: 256M
