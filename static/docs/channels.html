@@ -58,7 +58,7 @@
 
 <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">channels</span>(<span class="hljs-params"></span>) </span>{
 
-  <span class="hljs-keyword">this</span>.getAllChannels = <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params"></span>) </span>{
+  <span class="hljs-keyword">var</span> getAllChannels = <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params"></span>) </span>{
     <span class="hljs-keyword">var</span> deferred = <span class="hljs-keyword">new</span> <span class="hljs-built_in">Promise</span>(<span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">resolve, reject</span>) </span>{
       <span class="hljs-keyword">try</span> {
         <span class="hljs-keyword">var</span> allChannels = <span class="hljs-built_in">require</span>(<span class="hljs-string">'./data/channels'</span>);
@@ -81,7 +81,12 @@
             </div>
             
             <div class="content"><div class='highlight'><pre>            data.time = <span class="hljs-built_in">parseInt</span>(dateTime[<span class="hljs-number">1</span>].split(<span class="hljs-string">':'</span>).join(<span class="hljs-string">''</span>))/<span class="hljs-number">100</span>;
-            data.date = <span class="hljs-keyword">new</span> <span class="hljs-built_in">Date</span>(dateTime[<span class="hljs-number">0</span>]).getTime();
+
+            <span class="hljs-keyword">var</span> dateArr = dateTime[<span class="hljs-number">0</span>].split(<span class="hljs-string">'-'</span>).map(<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">val</span>) </span>{
+              <span class="hljs-keyword">return</span> <span class="hljs-built_in">parseInt</span>(val);
+            });
+            data.date = <span class="hljs-keyword">new</span> <span class="hljs-built_in">Date</span>(dateArr[<span class="hljs-number">0</span>],dateArr[<span class="hljs-number">1</span>]<span class="hljs-number">-1</span>,dateArr[<span class="hljs-number">2</span>],<span class="hljs-number">6</span>,<span class="hljs-number">0</span>,<span class="hljs-number">0</span>,<span class="hljs-number">0</span>).getTime();
+            
             <span class="hljs-keyword">return</span> data;
           }));
         } <span class="hljs-keyword">else</span> {
@@ -94,6 +99,10 @@
     <span class="hljs-keyword">return</span> deferred;
   };
 
+  <span class="hljs-keyword">this</span>.getAllChannels = <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params"></span>) </span>{
+    <span class="hljs-keyword">return</span> getAllChannels();
+  };
+
   <span class="hljs-keyword">this</span>.getAllChannelsGroupedByDate = <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params"></span>) </span>{
     <span class="hljs-keyword">var</span> deferred = <span class="hljs-keyword">new</span> <span class="hljs-built_in">Promise</span>(<span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">resolve, reject</span>) </span>{
       getAllChannels().then(
@@ -102,16 +111,24 @@
             <span class="hljs-keyword">return</span> a.date - b.date;
           });
           <span class="hljs-keyword">var</span> groupedChannels = groupArray(sortedChannels,<span class="hljs-string">'date'</span>);
+          <span class="hljs-keyword">var</span> returnData = {
+            <span class="hljs-attr">groupKey</span>: <span class="hljs-string">'date'</span>,
+            <span class="hljs-attr">groups</span>: []
+          };
           <span class="hljs-built_in">Object</span>.keys(groupedChannels).forEach(<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">group,index</span>) </span>{
-            groupedChannels[group] = groupedChannels[group].sort(<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">a,b</span>) </span>{
+            <span class="hljs-keyword">var</span> groupedData = {
+              group
+            };
+            groupedData.channels = groupedChannels[group].sort(<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">a,b</span>) </span>{
               <span class="hljs-keyword">return</span> a.time - b.time;
             });
+            returnData.groups.push(groupedData);
           });
 
-          resolve(groupedChannels);
+          resolve(returnData);
         },
         reject);
-    };
+    });
     <span class="hljs-keyword">return</span> deferred;
   };
 }

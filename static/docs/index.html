@@ -269,10 +269,9 @@ app.use(bodyParser.json());</pre></div></div>
             </div>
             
             <div class="content"><div class='highlight'><pre>  <span class="hljs-keyword">new</span> channels().getAllChannels().then(
-    <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">channels</span>) </span>{
-      res.set({ <span class="hljs-string">'Access-Control-Allow-Origin'</span>: <span class="hljs-string">'*'</span> });
+    <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">channelGroups</span>) </span>{
       res.json({
-        channels
+        channelGroups
       });
     },
     <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">error</span>) </span>{
@@ -293,6 +292,64 @@ app.use(bodyParser.json());</pre></div></div>
               
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-15">&#182;</a>
+              </div>
+              <p>endpoint for returning all available channels</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>app.get(<span class="hljs-string">'/channels/v1/channels/groupedByDate'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">req, res</span>) </span>{</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-16">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-16">&#182;</a>
+              </div>
+              <p>use channels module to get channel list grouped by date and sorted</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>  <span class="hljs-keyword">new</span> channels().getAllChannelsGroupedByDate().then(
+    <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">channelGroups</span>) </span>{</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-17">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-17">&#182;</a>
+              </div>
+              <p>res.set({ ‘Access-Control-Allow-Origin’: ‘*’ });</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>      res.json({
+        channelGroups
+      });
+    },
+    <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">error</span>) </span>{
+      <span class="hljs-built_in">console</span>.log(error);
+      res.status(<span class="hljs-number">500</span>).json({
+        <span class="hljs-attr">code</span>: <span class="hljs-string">"CS002"</span>,
+        <span class="hljs-attr">message</span>: <span class="hljs-string">"Error obtaining channel list"</span>
+      });
+    }
+  );
+});</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-18">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-18">&#182;</a>
               </div>
               <p>Ensure PORT is available for testing with Mocha</p>
 

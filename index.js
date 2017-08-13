@@ -57,9 +57,9 @@ app.get('/channels/v1/channels', function(req, res) {
 
   // use channels module to get channel list
   new channels().getAllChannels().then(
-    function(channelGroups) {
+    function(channels) {
       res.json({
-        channelGroups
+        channels
       });
     },
     function(error) {
