@@ -1,0 +1,36 @@
+{
+  "name": "docker_web_app",
+  "version": "1.0.0",
+  "description": "Channels node.js app",
+  "author": "Subhash Kumar <subkumar@gmail.com>",
+  "main": "index.js",
+  "scripts": {
+    "test": "nsp check",
+    "start": "node index.js",
+    "dev": "nodemon -L index.js",
+    "lint": "eslint **.js",
+    "docs": "docco **.js -o ./static/docs",
+    "postinstall": "npm test",
+    "mocha": "mocha || true",
+    "coverage": "istanbul cover _mocha ./test/*.js"
+  },
+  "dependencies": {
+    "body-parser": "^1.15.2",
+    "config": "^1.25.1",
+    "es6-promise": "^4.0.5",
+    "express": "^4.13.3",
+    "request": "^2.79.0",
+    "swagger-node-express": "^2.1.3",
+    "group-array": "0.3.3"
+  },
+  "devDependencies": {
+    "chai": "^4.1.0",
+    "chai-http": "^3.0.0",
+    "docco": "^0.7.0",
+    "eslint": "^3.19.0",
+    "istanbul": "^0.4.5",
+    "mocha": "^3.4.2",
+    "nodemon": "^1.11.0",
+    "nsp": "^2.6.3"
+  }
+}

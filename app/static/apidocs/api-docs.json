@@ -1,0 +1,207 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "title": "Channels API",
+    "description": "API supporting the Channel related operations",
+    "version": ""
+  },
+  "host": "",
+  "schemes": [
+    "https"
+  ],
+  "basePath": "/channels/v1",
+  "produces": [
+    "application/json"
+  ],
+  "paths": {
+    "/healthcheck": {
+      "get": {
+        "summary": "Health Check",
+        "description": "Simple health check/heartbeat endpoint",
+        "produces" : [ "application/json" ],
+        "tags": [
+          "Health Check"
+        ],
+        "responses": {
+          "200": {
+            "description": "Health check response",
+            "schema": {
+              "$ref": "#/definitions/HealthCheck"
+            }
+          },
+          "default": {
+            "description": "Unexpected error",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          }
+        }
+      }
+    },
+    "/channels": {
+      "get": {
+        "summary": "Get all channels",
+        "description": "Get all channels",
+        "produces" : [ "application/json" ],
+        "tags": [
+          "Channels"
+        ],
+        "responses": {
+          "200": {
+            "description": "Channel List",
+            "schema": {
+              "$ref": "#/definitions/ChannelList"
+            }
+          },
+          "500": {
+            "description": "Internal server error",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          },
+          "default": {
+            "description": "Unexpected error",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          }
+        }
+      }
+    },
+    "/channels/groupedByDate": {
+      "get": {
+        "summary": "Get all channels grouped by date and sorted",
+        "description": "Get all channels",
+        "produces" : [ "application/json" ],
+        "tags": [
+          "Channels"
+        ],
+        "responses": {
+          "200": {
+            "description": "Channel List",
+            "schema": {
+              "$ref": "#/definitions/GroupedChannelResponse"
+            }
+          },
+          "500": {
+            "description": "Internal server error",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          },
+          "default": {
+            "description": "Unexpected error",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          }
+        }
+      }
+    }
+  },
+  "definitions": {
+    "GroupedChannelResponse": {
+      "type": "object",
+      "properties": {
+        "channelGroups": {
+          "description": "List of channels available in the catalog.",
+          "allOf": [{
+            "$ref": "#/definitions/ChannelGroups"
+          }]
+        }
+      }
+    },
+    "ChannelGroups": {
+      "type": "object",
+      "properties": {
+        "groupKey": {
+          "description": "List of channels available in the catalog.",
+          "type": "string"
+        },
+        "groups": {
+          "type": "array",
+          "description": "Array of channel groups grouped by the groupKey.",
+          "items": {
+            "$ref": "#/definitions/ChannelGroup"
+          }
+        }
+      }
+    },
+    "ChannelGroup": {
+      "type": "object",
+      "properties": {
+        "group": {
+          "type": "string",
+          "description": "Group value for the particular group."
+        },
+        "channels": {
+          "type": "array",
+          "description": "List of channels for that group.",
+          "items": {
+            "$ref": "#/definitions/ChannelInfo"
+          }
+        }
+      }
+    },
+    "ChannelList": {
+      "type": "object",
+      "properties": {
+        "channels": {
+          "type": "array",
+          "description": "List of channels available in the catalog.",
+          "items": {
+            "$ref": "#/definitions/ChannelInfo"
+          }
+        }
+      }
+    },
+    "Error": {
+      "type": "object",
+      "properties": {
+        "code": {
+          "type": "string"
+        },
+        "message": {
+          "type": "string"
+        }
+      }
+    },
+    "HealthCheck": {
+      "type": "object",
+      "properties": {
+        "status": {
+          "type": "string"
+        }
+      }
+    },
+    "ChannelInfo": {
+      "type": "object",
+      "properties": {
+        "title": {
+          "type": "string",
+          "description": "Channel title"
+        },
+        "description": {
+          "type": "string",
+          "description": "Channel description"
+        },
+        "instructorName": {
+          "type": "string",
+          "description": "Name of the instructor"
+        },
+        "instructorPhotoUrl": {
+          "type": "string",
+          "description": "Instructor photo URL"
+        },
+        "subjectPhotoUrl": {
+          "type": "string",
+          "description": "Subject photo URL"
+        },
+        "time": {
+          "type": "string",
+          "description": "Time"
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+  <title>channels.js</title>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  <meta name="viewport" content="width=device-width, target-densitydpi=160dpi, initial-scale=1.0; maximum-scale=1.0; user-scalable=0;">
+  <link rel="stylesheet" media="all" href="docco.css" />
+</head>
+<body>
+  <div id="container">
+    <div id="background"></div>
+    
+      <ul id="jump_to">
+        <li>
+          <a class="large" href="javascript:void(0);">Jump To &hellip;</a>
+          <a class="small" href="javascript:void(0);">+</a>
+          <div id="jump_wrapper">
+          <div id="jump_page_wrapper">
+            <div id="jump_page">
+              
+                
+                <a class="source" href="channels.html">
+                  channels.js
+                </a>
+              
+                
+                <a class="source" href="index.html">
+                  index.js
+                </a>
+              
+            </div>
+          </div>
+        </li>
+      </ul>
+    
+    <ul class="sections">
+        
+          <li id="title">
+              <div class="annotation">
+                  <h1>channels.js</h1>
+              </div>
+          </li>
+        
+        
+        
+        <li id="section-1">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-1">&#182;</a>
+              </div>
+              
+            </div>
+            
+            <div class="content"><div class='highlight'><pre><span class="hljs-keyword">var</span> <span class="hljs-built_in">Promise</span> = <span class="hljs-built_in">require</span>(<span class="hljs-string">"es6-promise"</span>).Promise;
+<span class="hljs-keyword">var</span> groupArray = <span class="hljs-built_in">require</span>(<span class="hljs-string">'group-array'</span>);
+
+<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">channels</span>(<span class="hljs-params"></span>) </span>{
+
+  <span class="hljs-keyword">this</span>.getAllChannels = <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params"></span>) </span>{
+    <span class="hljs-keyword">var</span> deferred = <span class="hljs-keyword">new</span> <span class="hljs-built_in">Promise</span>(<span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">resolve, reject</span>) </span>{
+      <span class="hljs-keyword">try</span> {
+        <span class="hljs-keyword">var</span> allChannels = <span class="hljs-built_in">require</span>(<span class="hljs-string">'./data/channels'</span>);
+        <span class="hljs-keyword">if</span>(allChannels) {
+          resolve(allChannels.map(<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">channel</span>) </span>{
+            <span class="hljs-keyword">var</span> data = <span class="hljs-built_in">JSON</span>.parse(<span class="hljs-built_in">JSON</span>.stringify(channel));
+            <span class="hljs-keyword">var</span> dateTime = data.time.split(<span class="hljs-string">' '</span>);</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-2">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-2">&#182;</a>
+              </div>
+              <p>Reflect.deleteProperty(data, ‘time’);</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>            data.time = <span class="hljs-built_in">parseInt</span>(dateTime[<span class="hljs-number">1</span>].split(<span class="hljs-string">':'</span>).join(<span class="hljs-string">''</span>))/<span class="hljs-number">100</span>;
+            data.date = <span class="hljs-keyword">new</span> <span class="hljs-built_in">Date</span>(dateTime[<span class="hljs-number">0</span>]).getTime();
+            <span class="hljs-keyword">return</span> data;
+          }));
+        } <span class="hljs-keyword">else</span> {
+          reject(<span class="hljs-string">"Error obtaining channel data"</span>);
+        }
+      } <span class="hljs-keyword">catch</span>(error) {
+        reject(error);
+      }
+    });
+    <span class="hljs-keyword">return</span> deferred;
+  };
+
+  <span class="hljs-keyword">this</span>.getAllChannelsGroupedByDate = <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params"></span>) </span>{
+    <span class="hljs-keyword">var</span> deferred = <span class="hljs-keyword">new</span> <span class="hljs-built_in">Promise</span>(<span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">resolve, reject</span>) </span>{
+      getAllChannels().then(
+        <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">channels</span>) </span>{
+          <span class="hljs-keyword">var</span> sortedChannels = channels.sort(<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">a,b</span>) </span>{
+            <span class="hljs-keyword">return</span> a.date - b.date;
+          });
+          <span class="hljs-keyword">var</span> groupedChannels = groupArray(sortedChannels,<span class="hljs-string">'date'</span>);
+          <span class="hljs-built_in">Object</span>.keys(groupedChannels).forEach(<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">group,index</span>) </span>{
+            groupedChannels[group] = groupedChannels[group].sort(<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">a,b</span>) </span>{
+              <span class="hljs-keyword">return</span> a.time - b.time;
+            });
+          });
+
+          resolve(groupedChannels);
+        },
+        reject);
+    };
+    <span class="hljs-keyword">return</span> deferred;
+  };
+}
+
+<span class="hljs-built_in">module</span>.exports = channels;</pre></div></div>
+            
+        </li>
+        
+    </ul>
+  </div>
+</body>
+</html>
