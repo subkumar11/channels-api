@@ -11,6 +11,6 @@
 Web UI: http://localhost:8080  
 API: http://localhost:8080/apidocs
 
-A running version of this is deployed at:
+A running version of this is deployed at:  
 https://channelsnode.mybluemix.net/  
 https://channelsnode.mybluemix.net/apidocs
