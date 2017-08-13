@@ -1,8 +1,8 @@
 {
-  "name": "docker_web_app",
+  "name": "channels_app",
   "version": "1.0.0",
   "description": "Channels node.js app",
-  "author": "Subhash Kumar <subkumar@gmail.com>",
+  "author": "Subhash Kumar",
   "main": "index.js",
   "scripts": {
     "test": "nsp check",
