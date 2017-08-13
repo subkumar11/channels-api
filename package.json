@@ -10,7 +10,6 @@
     "dev": "nodemon -L index.js",
     "lint": "eslint **.js",
     "docs": "docco **.js -o ./static/docs",
-    "postinstall": "npm test",
     "mocha": "mocha || true",
     "coverage": "istanbul cover _mocha ./test/*.js"
   },
